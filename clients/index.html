@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket Thing1</title>
+</head>
+<body style="display: flex;flex-direction: column; justify-content:center; align-items: center; width: 100vw; height: 100vh;
+margin: 0; padding: 0; background-color: #242526;">
+    <div style="display: flex; justify-content: left; flex-direction: column;">
+        <h1 id="result" style="margin-top: 20px;font-weight: bold; color: azure;">
+
+        </h1>
+        <div style="display: flex; flex-direction: column; justify-content: left; align-items: center;">
+            <div style="margin-top: 5px;">
+                <input type="number" min="0" id="number" name="number" placeholder="Número" style="padding: 5px; outline: none; border-radius: 10px; border: 1px solid #ccc;
+                font-size: 16px;">
+            </div>
+            <div style="margin-top: 5px;">
+                <button style="cursor: pointer;" onclick="sendMessage()">Converter</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    // Create WebSocket connection.
+    const socket = new WebSocket('ws://localhost:3000/calc');
+
+    // Connection opened
+    socket.addEventListener('open', function (event) {
+        console.log('Connected to WS Server')
+    });
+
+    // Listen for messages
+    socket.addEventListener('message', function (event) {
+        console.log('Message from server ', event.data);
+        document.getElementById("result").innerText = event.data
+    });
+
+    const sendMessage = () => {
+        let numberValue = document.getElementById("number").value
+        socket.send(numberValue);
+    }
+</script>
+</html>s
